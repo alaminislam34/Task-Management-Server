@@ -77,6 +77,17 @@ async function run() {
       const result = await taskCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+
+    // **Update Task Category**
+    app.put("/tasks/:id", async (req, res) => {
+      const id = req.params.id;
+      const { category } = req.body;
+      const timestamp = new Date().toLocaleString();
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = { $set: { category, timestamp } };
+      const result = await taskCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
   } finally {
   }
 }
