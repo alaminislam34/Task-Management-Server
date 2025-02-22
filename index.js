@@ -58,6 +58,14 @@ async function run() {
       const tasks = await taskCollection.find(query).toArray();
       res.send(tasks);
     });
+
+    // **Create Task**
+    app.post("/addTask", async (req, res) => {
+      const task = req.body;
+      const result = await taskCollection.insertOne(task);
+      res.send(result);
+    });
+    // =======================  task api =============================
   } finally {
   }
 }
