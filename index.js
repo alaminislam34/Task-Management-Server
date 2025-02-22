@@ -6,13 +6,12 @@ const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 const app = express();
 const port = process.env.PORT || 5000;
 
-// middleware
+// ========================  middleware =================================
 const allowedOrigins = [
   "http://localhost:5173",
   "https://task-management4.web.app",
   "https://task-management4.firebaseapp.com",
 ];
-
 app.use(
   cors({
     origin: function (origin, callback) {
@@ -25,10 +24,10 @@ app.use(
     credentials: true,
   })
 );
-
 app.use(express.json());
 
-// mongodb connection
+// ========================= mongodb connection ======================================
+
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASS}@cluster0.nu6ig.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0`;
 
 const client = new MongoClient(uri, {
@@ -39,6 +38,7 @@ const client = new MongoClient(uri, {
   },
 });
 
+// ====================================== API ==============================================
 async function run() {
   try {
     const usersCollection = client.db("taskManagement").collection("users");
@@ -127,6 +127,7 @@ async function run() {
       const result = await taskCollection.deleteMany(query);
       res.send(result);
     });
+
     // ======================= task update api =========================
   } finally {
   }
