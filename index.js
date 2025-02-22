@@ -20,3 +20,19 @@ const client = new MongoClient(uri, {
     deprecationErrors: true,
   },
 });
+
+async function run() {
+  try {
+    const usersCollection = client.db("taskManagement").collection("users");
+    const taskCollection = client.db("taskManagement").collection("tasks");
+
+    // **Get All Users**
+    app.get("/users", async (req, res) => {
+      const email = req.query.email;
+      const query = email ? { email } : {};
+      const result = await usersCollection.find(query).toArray();
+      res.send(result);
+    });
+  } finally {
+  }
+}
