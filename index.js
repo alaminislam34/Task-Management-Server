@@ -100,7 +100,7 @@ async function run() {
     app.put("/tasks/:id", async (req, res) => {
       const id = req.params.id;
       const { category } = req.body;
-      const timestamp = new Date().toLocaleString();
+      const timestamp = new Date().toISOString();
       const filter = { _id: new ObjectId(id) };
       const updateDoc = { $set: { category, timestamp } };
       const result = await taskCollection.updateOne(filter, updateDoc);
