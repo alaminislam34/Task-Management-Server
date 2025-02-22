@@ -26,6 +26,7 @@ async function run() {
     const usersCollection = client.db("taskManagement").collection("users");
     const taskCollection = client.db("taskManagement").collection("tasks");
 
+    // =======================  user api =============================
     // **Get All Users**
     app.get("/users", async (req, res) => {
       const email = req.query.email;
@@ -45,6 +46,17 @@ async function run() {
       const user = { name, email };
       const result = await usersCollection.insertOne(user);
       res.send(result);
+    });
+
+    // =======================  user api =============================
+
+    // =======================  task api =============================
+    // **Get All Tasks**
+    app.get("/tasks", async (req, res) => {
+      const email = req.query.email;
+      const query = email ? { userEmail: email } : {};
+      const tasks = await taskCollection.find(query).toArray();
+      res.send(tasks);
     });
   } finally {
   }
