@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
 const port = process.env.PORT || 5000;
@@ -66,6 +66,17 @@ async function run() {
       res.send(result);
     });
     // =======================  task api =============================
+
+    // ======================= task update api =========================
+    // **Update Task**
+    app.patch("/updateTask/:id", async (req, res) => {
+      const id = req.params.id;
+      const task = req.body;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = { $set: task };
+      const result = await taskCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
   } finally {
   }
 }
