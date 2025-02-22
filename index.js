@@ -7,7 +7,25 @@ const app = express();
 const port = process.env.PORT || 5000;
 
 // middleware
-app.use(cors());
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://task-management4.web.app",
+  "https://task-management4.firebaseapp.com",
+];
+
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (allowedOrigins.includes(origin) || !origin) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 
 // mongodb connection
@@ -109,6 +127,19 @@ async function run() {
       const result = await taskCollection.deleteMany(query);
       res.send(result);
     });
+    // ======================= task update api =========================
   } finally {
   }
 }
+
+run().catch(console.dir);
+
+// **Root API**
+app.get("/", (req, res) => {
+  res.send("🚀 Task Management API is running...");
+});
+
+// **Server Listen**
+app.listen(port, () => {
+  console.log(`🚀 Server is running on http://localhost:${port}`);
+});
