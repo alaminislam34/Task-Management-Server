@@ -88,6 +88,19 @@ async function run() {
       const result = await taskCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+
+    // **Update task order list**
+    app.put("/tasksUpdateOrder", async (req, res) => {
+      const { tasks } = req.body;
+      const bulkOperations = tasks.map((task) => ({
+        updateOne: {
+          filter: { _id: new ObjectId(task._id) },
+          update: { $set: { serial: task.serial } },
+        },
+      }));
+      const result = await taskCollection.bulkWrite(bulkOperations);
+      res.send(result);
+    });
   } finally {
   }
 }
